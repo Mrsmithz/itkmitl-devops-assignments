@@ -1,5 +1,6 @@
 services:
   ratings:
+    build: ./ratings
     image: ghcr.io/mrsmithz/itkmitl-bookinfo-ratings:dev
     ports:
       - 8080:8080
@@ -13,17 +14,19 @@ services:
   mongodb:
     image: bitnami/mongodb:5.0.2-debian-10-r2
     volumes:
-      - "./databases:/docker-entrypoint-initdb.d"
+      - "./ratings/databases:/docker-entrypoint-initdb.d"
     environment:
       MONGODB_ROOT_PASSWORD: root1234
       MONGODB_USERNAME: ratings
       MONGODB_PASSWORD: 123456
       MONGODB_DATABASE: ratings
   details:
+    build: ./details
     image: ghcr.io/mrsmithz/itkmitl-bookinfo-details:dev
     ports:
       - 8081:8081
   reviews:
+    build: ./reviews
     image: ghcr.io/mrsmithz/itkmitl-bookinfo-reviews:dev
     ports:
       - 8082:8082
@@ -33,6 +36,7 @@ services:
     depends_on:
       - ratings
   productpage:
+    build: ./productpage
     image: ghcr.io/mrsmithz/itkmitl-bookinfo-productpage:dev
     ports:
       - 8083:8083
